@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-# OpenRouter API Key (sk- small letters mein exact format)
+# OpenRouter API Key
 OPENROUTER_API_KEY = "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"
 
 HTML_TEMPLATE = """
@@ -56,7 +56,7 @@ def get_aryan_response(user_message):
     }
     
     data = {
-        "model": "meta-llama/llama-3-8b-instruct:free", 
+        "model": "google/gemini-2.0-flash-lite-preview-02-05:free", 
         "messages": [{"role": "user", "content": user_message}]
     }
     
