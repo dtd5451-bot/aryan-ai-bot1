@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-# OpenRouter API Key
+# Apni OpenRouter API Key yahan paste karo (Ensure format starts with sk-or-v1-)
 OPENROUTER_API_KEY = "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"
 
 HTML_TEMPLATE = """
@@ -56,7 +56,7 @@ def get_aryan_response(user_message):
     }
     
     data = {
-        "model": "google/gemini-2.0-flash-lite-preview-02-05:free", 
+        "model": "google/gemini-2.0-flash-exp:free", 
         "messages": [{"role": "user", "content": user_message}]
     }
     
@@ -65,11 +65,11 @@ def get_aryan_response(user_message):
         response_json = response.json()
         
         if 'error' in response_json:
-            return f"API Error: {response_json['error'].get('message', 'Unknown Error')}"
+            return f"API Error Details: {response_json['error'].get('message', 'Unknown Error')}"
             
         return response_json['choices'][0]['message']['content']
     except Exception as e:
-        return f"Python Error: {str(e)}"
+        return f"Python Exception: {str(e)}"
 
 @app.route("/", methods=["GET", "POST"])
 def home():
