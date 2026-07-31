@@ -12,7 +12,8 @@ def get_aryan_response(user_message):
         "Content-Type": "application/json"
     }
     data = {
-        "model": "google/gemini-2.5-flash", 
+         "model": "google/gemini-flash-1.5"
+
         "messages": [{"role": "user", "content": user_message}]
     }
     
