@@ -1,10 +1,14 @@
 from flask import Flask, render_template_string, request
-import requests
+import google.generativeai as genai
 
 app = Flask(__name__)
 
-# Apni OpenRouter API Key yahan paste karo (Ensure format starts with sk-or-v1-)
-OPENROUTER_API_KEY = "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"
+# Tumhari Google Gemini API Key direct set kar di hai
+GEMINI_API_KEY = "AIzaSyCfDkFHRpsvIoaqVb1UM1Td4a_Yl4scu_w"
+genai.configure(api_key=GEMINI_API_KEY)
+
+# Gemini Model Setup
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 HTML_TEMPLATE = """
 <!DOCTYPE html>
@@ -44,33 +48,6 @@ HTML_TEMPLATE = """
 </html>
 """
 
-def get_aryan_response(user_message):
-    url = "https://openrouter.ai/api/v1/chat/completions"
-    api_key = OPENROUTER_API_KEY.strip()
-    
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://render.com",
-        "X-Title": "Aryan AI"
-    }
-    
-    data = {
-        "model": "google/gemini-2.0-flash-exp:free", 
-        "messages": [{"role": "user", "content": user_message}]
-    }
-    
-    try:
-        response = requests.post(url, headers=headers, json=data)
-        response_json = response.json()
-        
-        if 'error' in response_json:
-            return f"API Error Details: {response_json['error'].get('message', 'Unknown Error')}"
-            
-        return response_json['choices'][0]['message']['content']
-    except Exception as e:
-        return f"Python Exception: {str(e)}"
-
 @app.route("/", methods=["GET", "POST"])
 def home():
     chat_history = []
@@ -78,7 +55,12 @@ def home():
     if request.method == "POST":
         user_message = request.form.get("message")
         if user_message:
-            bot_reply = get_aryan_response(user_message)
+            try:
+                response = model.generate_content(user_message)
+                bot_reply = response.text
+            except Exception as e:
+                bot_reply = f"Gemini Error: {str(e)}"
+                
             chat_history.append({"user": user_message, "bot": bot_reply})
             
     return render_template_string(HTML_TEMPLATE, chat_history=chat_history)
