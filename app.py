@@ -48,11 +48,11 @@ def get_aryan_response(user_message):
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
         "Content-Type": "application/json"
-    }
-    data = {
-        "model": "google/gemini-flash-1.5", 
+        data = {
+        "model": "meta-llama/llama-3-8b-instruct:free", 
         "messages": [{"role": "user", "content": user_message}]
     }
+
     
     try:
         response = requests.post(url, headers=headers, json=data)
