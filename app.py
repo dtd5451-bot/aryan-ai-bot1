@@ -3,7 +3,8 @@ import requests
 
 app = Flask(__name__)
 
-OPENROUTER_API_KEY = "Sk-or-v1-1a42dee56c2ec435fd0ca2b66f12074730ba774bca7bd2a2b5009cc952848cc6"
+# OpenRouter API Key (sk- small letters mein exact format)
+OPENROUTER_API_KEY = "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"
 
 HTML_TEMPLATE = """
 <!DOCTYPE html>
@@ -45,12 +46,15 @@ HTML_TEMPLATE = """
 
 def get_aryan_response(user_message):
     url = "https://openrouter.ai/api/v1/chat/completions"
+    api_key = OPENROUTER_API_KEY.strip()
+    
     headers = {
-        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+        "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
         "HTTP-Referer": "https://render.com",
         "X-Title": "Aryan AI"
     }
+    
     data = {
         "model": "meta-llama/llama-3-8b-instruct:free", 
         "messages": [{"role": "user", "content": user_message}]
