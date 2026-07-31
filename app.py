@@ -3,12 +3,11 @@ import google.generativeai as genai
 
 app = Flask(__name__)
 
-# Tumhari Google Gemini API Key direct set kar di hai
 GEMINI_API_KEY = "AIzaSyCfDkFHRpsvIoaqVb1UM1Td4a_Yl4scu_w"
 genai.configure(api_key=GEMINI_API_KEY)
 
-# Gemini Model Setup
-model = genai.GenerativeModel('gemini-1.5-flash')
+# Latest supported model identifier
+model = genai.GenerativeModel('gemini-2.0-flash')
 
 HTML_TEMPLATE = """
 <!DOCTYPE html>
