@@ -47,19 +47,25 @@ def get_aryan_response(user_message):
     url = "https://openrouter.ai/api/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-        "Content-Type": "application/json"
-        data = {
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://render.com",
+        "X-Title": "Aryan AI"
+    }
+    data = {
         "model": "meta-llama/llama-3-8b-instruct:free", 
         "messages": [{"role": "user", "content": user_message}]
     }
-
     
     try:
         response = requests.post(url, headers=headers, json=data)
         response_json = response.json()
+        
+        if 'error' in response_json:
+            return f"API Error: {response_json['error'].get('message', 'Unknown Error')}"
+            
         return response_json['choices'][0]['message']['content']
     except Exception as e:
-        return "Bhai, abhi network mein thodi dikkat hai. Thodi der baad try karna."
+        return f"Python Error: {str(e)}"
 
 @app.route("/", methods=["GET", "POST"])
 def home():
